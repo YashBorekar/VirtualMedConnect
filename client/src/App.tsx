@@ -25,21 +25,14 @@ function Router() {
 
   return (
     <Switch>
-      {!isAuthenticated ? (
-        <>
-          <Route path="/" component={Landing} />
-          <Route path="/find-doctors" component={FindDoctors} />
-          <Route path="/symptom-checker" component={SymptomChecker} />
-        </>
-      ) : (
-        <>
-          <Route path="/" component={user?.role === "doctor" ? DoctorDashboard : PatientDashboard} />
-          <Route path="/find-doctors" component={FindDoctors} />
-          <Route path="/symptom-checker" component={SymptomChecker} />
-          <Route path="/book-appointment/:doctorId" component={BookAppointment} />
-          <Route path="/book-appointment" component={BookAppointment} />
-        </>
-      )}
+      {/* Always show all routes for demo mode */}
+      <Route path="/" component={isAuthenticated && user?.role === "doctor" ? DoctorDashboard : PatientDashboard} />
+      <Route path="/patient-dashboard" component={PatientDashboard} />
+      <Route path="/doctor-dashboard" component={DoctorDashboard} />
+      <Route path="/find-doctors" component={FindDoctors} />
+      <Route path="/symptom-checker" component={SymptomChecker} />
+      <Route path="/book-appointment/:doctorId" component={BookAppointment} />
+      <Route path="/book-appointment" component={BookAppointment} />
       <Route component={NotFound} />
     </Switch>
   );

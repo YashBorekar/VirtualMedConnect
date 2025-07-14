@@ -125,19 +125,27 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAppointmentsByPatient(patientId: string): Promise<Appointment[]> {
-    return await db
-      .select()
-      .from(appointments)
-      .where(eq(appointments.patientId, patientId))
-      .orderBy(desc(appointments.appointmentDate));
+    return await db.query.appointments.findMany({
+      where: eq(appointments.patientId, patientId),
+      with: {
+        doctor: {
+          with: {
+            user: true
+          }
+        }
+      },
+      orderBy: [desc(appointments.appointmentDate)]
+    });
   }
 
   async getAppointmentsByDoctor(doctorId: number): Promise<Appointment[]> {
-    return await db
-      .select()
-      .from(appointments)
-      .where(eq(appointments.doctorId, doctorId))
-      .orderBy(desc(appointments.appointmentDate));
+    return await db.query.appointments.findMany({
+      where: eq(appointments.doctorId, doctorId),
+      with: {
+        patient: true
+      },
+      orderBy: [desc(appointments.appointmentDate)]
+    });
   }
 
   async updateAppointment(id: number, updates: Partial<InsertAppointment>): Promise<Appointment> {
