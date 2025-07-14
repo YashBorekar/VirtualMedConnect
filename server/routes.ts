@@ -14,12 +14,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication
   await setupAuth(app);
 
+  // Initialize demo data (create demo user if it doesn't exist)
+  app.post('/api/init-demo', async (req: any, res) => {
+    try {
+      // Check if demo user already exists
+      const existingUser = await storage.getUser('demo_patient_001');
+      if (!existingUser) {
+        // Create demo patient user
+        await storage.upsertUser({
+          id: 'demo_patient_001',
+          email: 'demo.patient@mediconnect.com',
+          firstName: 'Demo',
+          lastName: 'Patient',
+          profileImageUrl: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150',
+          role: 'patient'
+        });
+      }
+      res.json({ message: 'Demo data initialized' });
+    } catch (error) {
+      console.error("Error initializing demo data:", error);
+      res.status(500).json({ message: "Failed to initialize demo data" });
+    }
+  });
+
   // Auth routes
   app.get('/api/auth/user', async (req: any, res) => {
     try {
-      // Return null for unauthenticated users (allows landing page)
+      // For demo mode: return demo user if not authenticated
       if (!req.isAuthenticated() || !req.user?.claims?.sub) {
-        return res.json(null);
+        const demoUser = await storage.getUser('demo_patient_001');
+        return res.json(demoUser);
       }
       
       const userId = req.user.claims.sub;
