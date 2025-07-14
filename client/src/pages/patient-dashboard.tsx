@@ -35,12 +35,12 @@ export default function PatientDashboard() {
 
   const { data: appointments = [], isLoading: appointmentsLoading } = useQuery({
     queryKey: ["/api/appointments"],
-    enabled: isAuthenticated,
+    enabled: true, // Always load appointments for demo mode
   });
 
   const { data: healthRecords = [], isLoading: recordsLoading } = useQuery({
     queryKey: ["/api/health-records"],
-    enabled: isAuthenticated,
+    enabled: true, // Always load health records for demo mode
   });
 
   const joinCallMutation = useMutation({

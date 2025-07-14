@@ -170,11 +170,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/appointments', isAuthenticated, async (req: any, res) => {
+  app.get('/api/appointments', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      // For demo: use demo patient ID if not authenticated
+      let userId = 'demo_patient_001';
+      if (req.isAuthenticated() && req.user?.claims?.sub) {
+        userId = req.user.claims.sub;
+      }
       
+      const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -306,9 +310,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/health-records', isAuthenticated, async (req: any, res) => {
+  app.get('/api/health-records', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      // For demo: use demo patient ID if not authenticated
+      let userId = 'demo_patient_001';
+      if (req.isAuthenticated() && req.user?.claims?.sub) {
+        userId = req.user.claims.sub;
+      }
+      
       const records = await storage.getHealthRecordsByPatient(userId);
       res.json(records);
     } catch (error) {
