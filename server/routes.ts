@@ -227,10 +227,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Symptom Analysis routes
   app.post("/api/symptom-analysis", authenticateToken, async (req: AuthenticatedRequest, res) => {
     try {
+      const { symptoms, age, gender } = req.body;
+      
+      if (!symptoms) {
+        return res.status(400).json({ message: "Symptoms are required" });
+      }
+      
+      // Mock AI analysis - in production, this would call an actual AI service
+      const mockAnalysis = {
+        conditions: [
+          {
+            name: "Viral Upper Respiratory Infection",
+            probability: 85,
+            description: "Common symptoms include headache, fever, and fatigue. Usually resolves within 7-10 days."
+          },
+          {
+            name: "Seasonal Allergies",
+            probability: 45,
+            description: "May be environmental allergies if symptoms persist or worsen outdoors."
+          }
+        ],
+        recommendations: [
+          "Rest and stay hydrated",
+          "Monitor temperature regularly",
+          "Consider over-the-counter pain relievers",
+          "Consult a doctor if symptoms worsen or persist beyond 7 days"
+        ]
+      };
+      
       const symptomAnalysisData = insertSymptomAnalysisSchema.parse({
-        ...req.body,
         patientId: req.userId,
+        symptoms,
+        age,
+        gender,
+        analysis: mockAnalysis,
+        recommendations: mockAnalysis.recommendations.join("; "),
       });
+      
       const symptomAnalysis = await storage.createSymptomAnalysis(symptomAnalysisData);
       res.status(201).json(symptomAnalysis);
     } catch (error) {

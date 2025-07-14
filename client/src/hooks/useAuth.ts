@@ -10,11 +10,12 @@ export function useAuth() {
       if (!token) return null;
       
       try {
-        return await apiRequest('/api/auth/user', {
+        const response = await apiRequest('/api/auth/user', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+        return await response.json();
       } catch (error) {
         // If token is invalid, remove it
         localStorage.removeItem('token');
@@ -26,7 +27,7 @@ export function useAuth() {
 
   const logout = () => {
     localStorage.removeItem('token');
-    window.location.href = '/auth';
+    window.location.reload();
   };
 
   return {

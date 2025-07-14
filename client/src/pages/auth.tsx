@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { Heart } from "lucide-react";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [, setLocation] = useLocation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -24,10 +25,20 @@ export default function Auth() {
   const authMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
       const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-      return await apiRequest(endpoint, {
+      const response = await fetch(endpoint, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
+      
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error || "Authentication failed");
+      }
+      
+      return await response.json();
     },
     onSuccess: (data) => {
       // Store token in localStorage
@@ -40,6 +51,9 @@ export default function Auth() {
         title: "Success",
         description: isLogin ? "Logged in successfully!" : "Account created successfully!",
       });
+      
+      // Redirect to dashboard
+      setLocation("/");
     },
     onError: (error: any) => {
       toast({
@@ -79,6 +93,9 @@ export default function Auth() {
             <CardTitle className="text-center">
               {isLogin ? "Login" : "Sign Up"}
             </CardTitle>
+            <p className="text-center text-sm text-gray-600">
+              Use your email and password to access your account
+            </p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">

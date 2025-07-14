@@ -58,10 +58,10 @@ export default function Header() {
             {!isAuthenticated ? (
               <div className="flex items-center space-x-2">
                 <Button variant="ghost" asChild>
-                  <a href="/api/login">Sign In</a>
+                  <Link href="/auth">Sign In</Link>
                 </Button>
                 <Button asChild>
-                  <a href="/api/login">Get Started</a>
+                  <Link href="/auth">Get Started</Link>
                 </Button>
               </div>
             ) : (
@@ -94,10 +94,10 @@ export default function Header() {
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <a href="/api/logout" className="cursor-pointer">
+                    <button onClick={() => logout()} className="cursor-pointer w-full text-left">
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>Log out</span>
-                    </a>
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -107,4 +107,9 @@ export default function Header() {
       </div>
     </header>
   );
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/auth';
 }

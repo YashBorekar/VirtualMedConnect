@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import NotFound from "@/pages/not-found";
-import Landing from "@/pages/landing";
+import Auth from "@/pages/auth";
 import PatientDashboard from "@/pages/patient-dashboard";
 import DoctorDashboard from "@/pages/doctor-dashboard";
 import FindDoctors from "@/pages/find-doctors";
@@ -25,8 +25,12 @@ function Router() {
 
   return (
     <Switch>
-      {/* Always show all routes for demo mode */}
-      <Route path="/" component={isAuthenticated && user?.role === "doctor" ? DoctorDashboard : PatientDashboard} />
+      <Route path="/" component={
+        isAuthenticated 
+          ? (user?.role === "doctor" ? DoctorDashboard : PatientDashboard)
+          : Auth
+      } />
+      <Route path="/auth" component={Auth} />
       <Route path="/patient-dashboard" component={PatientDashboard} />
       <Route path="/doctor-dashboard" component={DoctorDashboard} />
       <Route path="/find-doctors" component={FindDoctors} />
