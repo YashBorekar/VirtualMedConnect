@@ -1,4 +1,4 @@
-# SmartCare - Virtual Healthcare Platform
+# MediConnect - Virtual Healthcare Platform
 
 A full-stack telemedicine platform that enables secure doctor-patient consultations, AI-powered symptom analysis, and comprehensive health record management.
 
