@@ -11,14 +11,30 @@ import {
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Temporary development auth bypass - will set up full auth later
-  // await setupAuth(app);
+  // Set up authentication
+  await setupAuth(app);
 
-  // Development auth routes - return null for now to show landing page
+  // Auth routes
   app.get('/api/auth/user', async (req: any, res) => {
     try {
-      // For development: return null to show landing page
-      return res.json(null);
+      // Return null for unauthenticated users (allows landing page)
+      if (!req.isAuthenticated() || !req.user?.claims?.sub) {
+        return res.json(null);
+      }
+      
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // If user is a doctor, include doctor profile
+      if (user.role === "doctor") {
+        const doctorProfile = await storage.getDoctorProfile(userId);
+        return res.json({ ...user, doctorProfile });
+      }
+      
+      res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });

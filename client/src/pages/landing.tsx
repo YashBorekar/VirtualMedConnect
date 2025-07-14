@@ -25,10 +25,10 @@ export default function Landing() {
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button size="lg" asChild className="text-lg px-8 py-4">
-                  <a href="/api/login">
+                  <Link href="/find-doctors">
                     <Video className="mr-2 h-5 w-5" />
-                    Book Consultation
-                  </a>
+                    Find Doctors
+                  </Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild className="text-lg px-8 py-4">
                   <Link href="/symptom-checker">
