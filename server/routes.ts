@@ -40,9 +40,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.get('/api/auth/user', async (req: any, res) => {
     try {
-      // For demo mode: return demo user if not authenticated
+      // For demo mode: return appropriate demo user based on route
       if (!req.isAuthenticated() || !req.user?.claims?.sub) {
-        const demoUser = await storage.getUser('demo_patient_001');
+        // Check if this is for doctor dashboard (you can also use query params)
+        const referer = req.get('Referer') || '';
+        const isDoctorRoute = referer.includes('/doctor-dashboard');
+        
+        const demoUserId = isDoctorRoute ? 'demo_doctor_001' : 'demo_patient_001';
+        const demoUser = await storage.getUser(demoUserId);
+        
+        // If demo user is a doctor, include doctor profile
+        if (demoUser?.role === "doctor") {
+          const doctorProfile = await storage.getDoctorProfile(demoUserId);
+          return res.json({ ...demoUser, doctorProfile });
+        }
+        
         return res.json(demoUser);
       }
       
@@ -196,10 +208,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/appointments', async (req: any, res) => {
     try {
-      // For demo: use demo patient ID if not authenticated
+      // For demo: determine user based on route or authentication
       let userId = 'demo_patient_001';
+      
       if (req.isAuthenticated() && req.user?.claims?.sub) {
         userId = req.user.claims.sub;
+      } else {
+        // Check if this is for doctor dashboard
+        const referer = req.get('Referer') || '';
+        const isDoctorRoute = referer.includes('/doctor-dashboard');
+        if (isDoctorRoute) {
+          userId = 'demo_doctor_001';
+        }
       }
       
       const user = await storage.getUser(userId);

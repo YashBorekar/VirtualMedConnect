@@ -18,24 +18,24 @@ export default function DoctorDashboard() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/api/login";
-      }, 500);
-      return;
-    }
-  }, [isAuthenticated, isLoading, toast]);
+  // For demo mode: don't redirect if not authenticated
+  // useEffect(() => {
+  //   if (!isLoading && !isAuthenticated) {
+  //     toast({
+  //       title: "Unauthorized",
+  //       description: "You are logged out. Logging in again...",
+  //       variant: "destructive",
+  //     });
+  //     setTimeout(() => {
+  //       window.location.href = "/api/login";
+  //     }, 500);
+  //     return;
+  //   }
+  // }, [isAuthenticated, isLoading, toast]);
 
   const { data: appointments = [], isLoading: appointmentsLoading } = useQuery({
     queryKey: ["/api/appointments"],
-    enabled: isAuthenticated,
+    enabled: true, // Always load appointments for demo mode
   });
 
   const joinCallMutation = useMutation({
