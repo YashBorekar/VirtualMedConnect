@@ -1,6 +1,6 @@
-# MediConnect Setup Guide
+# SmartCare Setup Guide
 
-This guide will help you set up the MediConnect telemedicine platform locally in VS Code, push it to GitHub, and deploy it to free hosting services.
+This guide will help you set up the SmartCare telemedicine platform locally in VS Code, push it to GitHub, and deploy it to free hosting services.
 
 ## 📋 Prerequisites
 
@@ -18,13 +18,13 @@ Before starting, ensure you have:
 1. In your Replit project, click on the three dots (⋯) menu
 2. Select "Download as ZIP"
 3. Extract the ZIP file to your desired local directory
-4. Rename the folder to `mediconnect` (or your preferred name)
+4. Rename the folder to `smartcare` (or your preferred name)
 
 ### 2. VS Code Setup
 
 1. **Open the project in VS Code:**
    ```bash
-   cd mediconnect
+   cd smartcare
    code .
    ```
 
@@ -50,7 +50,7 @@ Before starting, ensure you have:
 2. **Configure your `.env` file:**
    ```env
    # For local development
-   DATABASE_URL=postgresql://username:password@localhost:5432/mediconnect
+   DATABASE_URL=postgresql://username:password@localhost:5432/smartcare
    NODE_ENV=development
    
    # For production (add when deploying)
@@ -62,7 +62,7 @@ Before starting, ensure you have:
 
 **Option A: Local PostgreSQL**
 1. Install PostgreSQL locally
-2. Create a database named `mediconnect`
+2. Create a database named `smartcare`
 3. Update DATABASE_URL in `.env`
 
 **Option B: Free Cloud Database (Recommended)**
@@ -97,13 +97,13 @@ git init
 git add .
 
 # Create initial commit
-git commit -m "Initial commit: MediConnect telemedicine platform"
+git commit -m "Initial commit: SmartCare telemedicine platform"
 ```
 
 ### 2. Create GitHub Repository
 
 1. Go to [GitHub](https://github.com) and click "New Repository"
-2. Name it `mediconnect` (or your preferred name)
+2. Name it `smartcare` (or your preferred name)
 3. Don't initialize with README (you already have one)
 4. Click "Create Repository"
 
@@ -111,7 +111,7 @@ git commit -m "Initial commit: MediConnect telemedicine platform"
 
 ```bash
 # Add GitHub remote
-git remote add origin https://github.com/yourusername/mediconnect.git
+git remote add origin https://github.com/yourusername/smartcare.git
 
 # Push to GitHub
 git branch -M main

@@ -1,4 +1,4 @@
-# MediConnect - Virtual Healthcare Platform
+# SmartCare - Virtual Healthcare Platform
 
 A full-stack telemedicine platform that enables secure doctor-patient consultations, AI-powered symptom analysis, and comprehensive health record management.
 
@@ -44,7 +44,7 @@ A full-stack telemedicine platform that enables secure doctor-patient consultati
 ### 1. Clone the Repository
 ```bash
 git clone <your-repo-url>
-cd mediconnect
+cd smartcare
 ```
 
 ### 2. Install Dependencies

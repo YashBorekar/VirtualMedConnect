@@ -1,8 +1,8 @@
-# MediConnect - Virtual Healthcare Platform
+# SmartCare - Virtual Healthcare Platform
 
 ## Overview
 
-MediConnect is a full-stack virtual healthcare platform that enables secure doctor-patient consultations, AI-powered symptom analysis, and comprehensive health record management. The application provides a seamless experience for both patients seeking medical care and doctors providing virtual consultations.
+SmartCare is a full-stack virtual healthcare platform that enables secure doctor-patient consultations, AI-powered symptom analysis, and comprehensive health record management. The application provides a seamless experience for both patients seeking medical care and doctors providing virtual consultations.
 
 ## User Preferences
 
