@@ -146,9 +146,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Appointment routes
-  app.post('/api/appointments', isAuthenticated, async (req: any, res) => {
+  app.post('/api/appointments', async (req: any, res) => {
     try {
-      const patientId = req.user.claims.sub;
+      // For demo: use a demo patient ID if not authenticated
+      let patientId = 'demo_patient_001';
+      if (req.isAuthenticated() && req.user?.claims?.sub) {
+        patientId = req.user.claims.sub;
+      }
+      
       const validatedData = insertAppointmentSchema.parse({
         ...req.body,
         patientId,
